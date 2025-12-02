@@ -1,6 +1,8 @@
 from pico2d import *
 import game_world
 import game_framework
+import random
+import common
 
 
 class Ball:
@@ -9,24 +11,19 @@ class Ball:
     def __init__(self, x = 400, y = 300, throwin_speed = 15, throwin_angle = 45):
         if Ball.image == None:
             Ball.image = load_image('ball21x21.png')
-        self.x, self.y = x, y
-        self.xv = throwin_speed * math.cos(math.radians(throwin_angle))  # m/s
-        self.yv = abs(throwin_speed * math.sin(math.radians(throwin_angle)))   # m/s
-        self.stopped = True if throwin_speed == 0.0 else False
+        self.x, self.y = random.randint(100,common.court.w - 100), random.randint(100,common.court.h - 100)
+
+
+
 
     def draw(self):
-        self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        sx = self.x - common.court.window_left
+        sy = self.y - common.court.window_bottom
+        self.image.draw(sx, sy)
+
 
     def update(self):
-        if self.stopped:
-            return
-        # 위치 업데이트
-        self.x += self.xv * game_framework.frame_time * PIXEL_PER_METER
-        self.y += self.yv * game_framework.frame_time * PIXEL_PER_METER
-
-        # y 축 속도에 중력 가속도 적용
-        self.yv -= GRAVITY * game_framework.frame_time  # m/s
+        pass
 
     def get_bb(self):
         return self.x-10, self.y-10,self.x + 10,self.y + 10
